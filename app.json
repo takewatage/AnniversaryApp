@@ -29,6 +29,20 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "appUrl": "http://localhost:5000",
+      "firebase": {
+        "apiKey": "AIzaSyDHh_fOa2ZJI6u026nPflqrnQ0BUh3Z6lA",
+        "authDomain": "anniversaryapp-c0cfc.firebaseapp.com",
+        "projectId": "anniversaryapp-c0cfc",
+        "storageBucket": "anniversaryapp-c0cfc.appspot.com",
+        "appId": "1:1080034645500:web:1ac8885056ba5ac9fd4e79",
+        "messagingSenderId": "1080034645500",
+        "anniversaryCollection": "anniversaries",
+        "pairsCollection": "pairs",
+        "databaseURL": "https://anniversaryapp-c0cfc.firebaseio.com"
+      }
     }
   }
 }
