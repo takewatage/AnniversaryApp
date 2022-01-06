@@ -13,14 +13,16 @@ export type AnniversaryState = {
     pairs: Pairs,
     pageName: string,
     pageLoading: boolean,
-    checkLoading: boolean
+    checkLoading: boolean,
+    stories: []
 }
 
 const initialState: AnniversaryState = {
     pairs: new Pairs({}).getPostable() as Pairs,
     pageName: '',
     pageLoading: false,
-    checkLoading: false
+    checkLoading: false,
+    stories: []
 }
 
 

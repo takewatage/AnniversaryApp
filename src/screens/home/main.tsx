@@ -4,7 +4,7 @@ import {useState} from "react";
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Layout from "../../constants/Layout";
-import {Button, Icon, Image} from "react-native-elements";
+import linq from 'linq'
 import Ripple from "react-native-material-ripple";
 import {FirstScreen, SecondScreen} from "./index";
 import Ani from "../../models/ani";
@@ -15,25 +15,22 @@ import MenuDrawer from 'react-native-side-drawer'
 import SideMenu from "../../components/SideMenu";
 import FirestoreService from "../../services/FirestoreService";
 import Pairs from "../../models/pairs";
-import {fetchAnniversary, updateAnniversary} from "../../store/modules/anniversary"
+import dayjs from "dayjs";
 import FAIcon from "react-native-vector-icons/FontAwesome";
 import FIcon from "react-native-vector-icons/Feather";
+import Story from "../../models/story";
 
 
-const renderScene = SceneMap({
-    first: () => (<FirstScreen />),
-    second: () => (<SecondScreen/>),
-});
 
 export default function HomeScreen() {
     const [pageIndex, setPageIndex] = useState(0)
     const {pairs} = useSelector<RootState, {pairs: Pairs}>((state:RootState) => state.anniversary)
-    const [isCheckValue, setCheckValue] = useState(false)
+    // const [isCheckValue, setCheckValue] = useState(false)
     const [isSideMenu, setIsSideMenu] = useState(false)
-    const {pairCode} = useSelector<RootState, {pairCode: string}>((state:RootState) => state.pairCode)
+    // const {pairCode} = useSelector<RootState, {pairCode: string}>((state:RootState) => state.pairCode)
 
-    const [pairData, setPairData] = useState<Pairs>(new Pairs({}))
-
+    // const [pairData, setPairData] = useState<Pairs>(new Pairs({}))
+    const [stories, setStory] = useState([])
     const dispatch = useDispatch()
 
     const [routes] = React.useState([
@@ -42,20 +39,43 @@ export default function HomeScreen() {
     ]);
     const safeArea = useSafeAreaInsets()
 
-    React.useEffect(() => {
+    const renderScene = SceneMap({
+        first: () => (<FirstScreen pairs={new Pairs(pairs)}/>),
+        second: () => (<SecondScreen stories={stories}/>),
+    });
 
-    }, [])
+    React.useMemo(() => {
+        console.log("main", pairs.anniversaries)
+        const arrays: Story[] = []
+        const ARR = [1,10,30,50,100,150,200,300,400,500,600,700,800,900,1000]
 
-    React.useEffect(() => {
-        setPairData(new Pairs({...pairs}))
-        return () => {
-            setPairData(new Pairs({})); // This worked for me
-        };
+
+        for (let i=0; ;i++) {
+            if (ARR.indexOf(i) !== -1) {
+
+                linq.from(pairs.anniversaries).forEach(x => {
+                    const d = dayjs(x.date).add(i, 'd').format('YYYY.MM.DD')
+
+                    const st = {
+                        title: '付き合ってから',
+                        date: `${d}`,
+                        dateCount: `${i}日目`,
+                    }
+                    arrays.push(new Story(st))
+                })
+            }
+            if(i == 1000) {
+                console.log('arrays', arrays)
+                // @ts-ignore
+                setStory(arrays)
+                return
+            }
+        }
+
+
     }, [])
 
     const onMenu = () => {
-        console.log("onMenu!!!!")
-
         setIsSideMenu(true)
     }
 

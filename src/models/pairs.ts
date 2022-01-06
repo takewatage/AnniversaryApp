@@ -45,7 +45,6 @@ export default class Pairs extends Model {
 	get mainAnniversaryData() {
 		if(this.anniversaries.length) {
 			const res =  linq.from(this.anniversaries).where(x => x.type == "anniversary").toArray()
-			console.log("res",res)
 			if(res.length) {
 				return res[0]
 			}

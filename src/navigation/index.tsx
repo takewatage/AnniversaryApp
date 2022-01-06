@@ -14,6 +14,7 @@ import {HeaderBackBtn} from "../components/HeaderBackBtn";
 import {HomeScreen} from "../screens/home";
 import FirestoreService from "../services/FirestoreService";
 import {InitScreen} from "../screens/home/InitScreen";
+import {CreateDateModalScreen} from "../screens/iosModal/CreateDateModal";
 
 
 const Stack = createStackNavigator();
@@ -69,6 +70,8 @@ const ModalNavigation = () => {
             mode={'modal'}
         >
             <Stack.Screen name='MainNavigation' component={IosModalNavigation} options={{headerShown:false}}/>
+
+            <Stack.Screen name='CreateDateModalScreen' component={CreateDateModalScreen}/>
         </Stack.Navigator>
     )
 }

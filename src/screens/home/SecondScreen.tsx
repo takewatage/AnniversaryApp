@@ -4,6 +4,12 @@ import {Button, Card} from "react-native-elements";
 import Ripple from "react-native-material-ripple";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import AIcon from 'react-native-vector-icons/AntDesign'
+import {useNavigation} from "@react-navigation/native";
+import {useSelector} from "react-redux";
+import {RootState} from "../../store";
+import Pairs from "../../models/pairs";
+import useStory from "../../hooks/useStory";
+import Story from "../../models/story";
 
 const TEST = [
     {
@@ -32,16 +38,27 @@ interface AnniversaryListType {
     daysLater?: string
 }
 
-export const SecondScreen = () => {
+interface IProps {
+    stories: Story[]
+}
+
+export const SecondScreen = (props: IProps) => {
     const [anniversaryList, setAnniversaryList] = useState<AnniversaryListType[]>(TEST)
     const safeArea = useSafeAreaInsets();
+    const navi = useNavigation()
+    const {pairs} = useSelector<RootState, {pairs: Pairs}>((state:RootState) => state.anniversary)
 
-    const _renderItem = (item : ListRenderItemInfo<AnniversaryListType>) => {
+
+    const createStory = () => {
+        navi.navigate('CreateDateModalScreen')
+    }
+
+    const _renderItem = (item : ListRenderItemInfo<Story>) => {
         return (
             <Ripple onPress={() => {}} style={styles.card}>
-                <Text style={{fontSize: 12, color: '#A0A0A0'}}>付き合ってから！</Text>
-                <Text style={{marginRight: 15,fontSize: 20}}>99999日目</Text>
-                <Text style={{color: 'pink'}}>2021.11.2</Text>
+                <Text style={{fontSize: 12, color: '#A0A0A0'}}>{item.item.title}</Text>
+                <Text style={{marginRight: 15,fontSize: 20}}>{item.item.dateCount}</Text>
+                <Text style={{color: 'pink'}}>{item.item.date}</Text>
             </Ripple>
         )
     }
@@ -49,12 +66,13 @@ export const SecondScreen = () => {
     return (
         <View style={{ flex: 1, padding: 15, position:"relative"}}>
             <FlatList
-                data={TEST}
+                data={props.stories}
                 renderItem={_renderItem}
-                keyExtractor={item => item.id.toString()}
+                keyExtractor={(item) => item.date}
             />
 
-            <Ripple style={[styles.Icon, {bottom: safeArea.bottom+ 30}]} onPress={() => console.log('hello')}>
+            <Ripple style={[styles.Icon, {bottom: safeArea.bottom+ 30}]}
+                    onPress={() => createStory()}>
                 <AIcon
                     name='plus'
                     color={'#fff'}
